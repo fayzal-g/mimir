@@ -465,6 +465,7 @@ func (t *Mimir) initStoreQueryables() (services.Service, error) {
 
 func (t *Mimir) initActiveGroupsCleanupService() (services.Service, error) {
 	t.ActiveGroupsCleanup = util.NewActiveGroupsCleanupWithDefaultValues(t.Cfg.MaxGroupsPerUser, t.Distributor.RemoveGroupMetricsForUser, t.Ingester.RemoveGroupMetricsForUser)
+
 	return t.ActiveGroupsCleanup, nil
 }
 

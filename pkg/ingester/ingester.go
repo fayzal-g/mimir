@@ -408,9 +408,6 @@ func (i *Ingester) starting(ctx context.Context) error {
 		servs = append(servs, closeIdleService)
 	}
 
-	//i.activeGroups = util.NewActiveGroupsCleanupWithDefaultValues(i.removeGroupMetricsForUser, i.cfg.MaxGroupsPerUser)
-	servs = append(servs, i.activeGroups)
-
 	var err error
 	i.subservices, err = services.NewManager(servs...)
 	if err == nil {

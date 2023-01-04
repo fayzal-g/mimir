@@ -422,7 +422,7 @@ func New(cfg Config, clientConfig ingester_client.Config, limits *validation.Ove
 
 	d.replicationFactor.Set(float64(ingestersRing.ReplicationFactor()))
 	d.activeUsers = util.NewActiveUsersCleanupWithDefaultValues(d.cleanupInactiveUser)
-	//d.activeGroups = util.NewActiveGroupsCleanupWithDefaultValues(d.RemoveGroupMetricsForUser, d.cfg.MaxGroupsPerUser)
+	d.activeGroups = activeGroupsCleanupService
 
 	d.forwarder = forwarding.NewForwarder(cfg.Forwarding, reg, log, limits, d.activeGroups)
 	// The forwarder is an optional feature, if it's disabled then d.forwarder will be nil.
@@ -432,7 +432,7 @@ func New(cfg Config, clientConfig ingester_client.Config, limits *validation.Ove
 
 	d.pushWithMiddlewares = d.GetPushFunc(nil)
 
-	subservices = append(subservices, d.ingesterPool, d.activeUsers, d.activeGroups)
+	subservices = append(subservices, d.ingesterPool, d.activeUsers)
 	d.subservices, err = services.NewManager(subservices...)
 	if err != nil {
 		return nil, err
